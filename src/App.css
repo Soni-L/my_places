@@ -1,0 +1,16 @@
+.page-content-container {
+  display: flex;
+  height: calc(100vh - 70px);
+}
+
+.page-content-container-map-container {
+  flex: 1;
+  padding: 8px;
+}
+
+.page-content-container-list-container {
+  flex: 1;
+  max-width: 300px;
+  border-left: 1px solid #1976d2;
+  padding: 8px;
+}
