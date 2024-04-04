@@ -47,12 +47,12 @@ export default function AddLocationDialog({ dialogOptions, handleClose }) {
             fullWidth
             variant="standard"
           />
-          <Typography id="lat" variant="body2">
+          {/* <Typography id="lat" variant="body2">
             Lat: {dialogOptions.lat}
           </Typography>
           <Typography id="lng" variant="body2">
             Lng: {dialogOptions.lng}
-          </Typography>
+          </Typography> */}
         </DialogContent>
         <DialogActions>
           <Button type="submit">Add Location</Button>

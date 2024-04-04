@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Box,
   AppBar,
@@ -7,13 +7,13 @@ import {
   Tooltip,
   IconButton,
   Menu,
-  MenuItem,
 } from "@mui/material";
-import { List, ListItem, ListItemText, Paper } from "@mui/material";
+import { ListItem, ListItemText } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import LocationSearchingIcon from "@mui/icons-material/LocationSearching";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from "@mui/icons-material/Close";
 import styles from "./Navbar.module.css";
 import useScreenSize from "../../hooks/useScreenSize";
 
@@ -48,9 +48,12 @@ export default function Navbar({
               aria-haspopup="true"
               aria-expanded={open ? "true" : undefined}
             >
-              {width <= 768 && (
-                <MenuIcon sx={{ width: 32, height: 32 }}></MenuIcon>
-              )}
+              {width <= 768 &&
+                (open ? (
+                  <CloseIcon sx={{ color: "white" }} />
+                ) : (
+                  <MenuIcon sx={{ color: "white" }} />
+                ))}
             </IconButton>
           </Tooltip>
           <Menu
@@ -64,9 +67,10 @@ export default function Navbar({
               sx: {
                 overflowY: "scroll",
                 filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                mt: "10px",
-                ml: "14px",
+                mt: "16px",
+                ml: "20px",
                 height: "calc(100vh - 60px)",
+                minWidth: "200px",
               },
             }}
             transformOrigin={{ horizontal: "right", vertical: "top" }}
