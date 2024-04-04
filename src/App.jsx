@@ -1,8 +1,12 @@
 import "./App.css";
 import { AppBar, Box, Toolbar, Typography } from "@mui/material";
 import MapContainer from "./components/MapContainer";
+import { useState } from "react";
+import AddLocationDialog from "./components/AddLocationDialog";
 
 function App() {
+  const [addLocationDialog, setAddLocationDialog] = useState({ open: false });
+
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -16,10 +20,18 @@ function App() {
       </Box>
       <div className="page-content-container">
         <div className="page-content-container-map-container">
-          <MapContainer />
+          <MapContainer
+            addLocationClick={(event) => {
+              setAddLocationDialog({ open: true, ...event });
+            }}
+          />
         </div>
         <div className="page-content-container-list-container">list</div>
       </div>
+      <AddLocationDialog
+        dialogOptions={addLocationDialog}
+        handleClose={() => setAddLocationDialog({ open: false })}
+      />
     </>
   );
 }

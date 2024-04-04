@@ -6,7 +6,7 @@ import {
   InfoWindowF,
 } from "@react-google-maps/api";
 
-const MapContainer = () => {
+const MapContainer = ({addLocationClick}) => {
   const [currentMarkers, setCurrentMarkers] = useState([]);
 
   const mapStyles = {
@@ -48,6 +48,7 @@ const MapContainer = () => {
             key={index}
             position={marker}
             clickable={true}
+            onClick={() => addLocationClick(marker)}
             icon={{
               url: "/icons/AddLocation.png",
               scaledSize: new window.google.maps.Size(46, 46),
