@@ -5,9 +5,11 @@ import {
   MarkerF,
   InfoWindowF,
 } from "@react-google-maps/api";
+import useLocalStorageArray from "../hooks/useLocalStorageArray";
 
-const MapContainer = ({addLocationClick}) => {
+const MapContainer = ({ addLocationClick }) => {
   const [currentMarkers, setCurrentMarkers] = useState([]);
+  const { items } = useLocalStorageArray();
 
   const mapStyles = {
     height: "calc(100vh - 70px)",
@@ -20,11 +22,6 @@ const MapContainer = ({addLocationClick}) => {
   };
 
   const handleMapClick = (event) => {
-    console.log("Clicked coordinates:", {
-      lat: event.latLng.lat(),
-      lng: event.latLng.lng(),
-    });
-
     const newMarker = {
       lat: event.latLng.lat(),
       lng: event.latLng.lng(),
@@ -56,10 +53,21 @@ const MapContainer = ({addLocationClick}) => {
           >
             <InfoWindowF position={marker}>
               <div>
-                <h4 style={{ color: "black" }}>Click on the marker to save location</h4>
+                <h4 style={{ color: "black" }}>
+                  Click on the marker to save location
+                </h4>
               </div>
             </InfoWindowF>
           </MarkerF>
+        ))}
+
+        {"Saved locations"}
+        {items.map((marker) => (
+          <MarkerF
+            key={marker.id}
+            position={{ lat: marker.lat, lng: marker.lng }}
+            clickable={true}
+          ></MarkerF>
         ))}
       </GoogleMap>
     </LoadScript>
