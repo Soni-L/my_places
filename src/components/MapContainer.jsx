@@ -2,7 +2,8 @@ import { useState } from "react";
 import {
   GoogleMap,
   LoadScript,
-  Marker,
+  MarkerF,
+  InfoWindowF,
 } from "@react-google-maps/api";
 
 const MapContainer = () => {
@@ -32,13 +33,6 @@ const MapContainer = () => {
     setCurrentMarkers([newMarker]);
   };
 
-  const plusMarkerIcon = {
-    url: "https://img.icons8.com/metro/26/000000/plus.png",
-    // origin: new window.google.maps.Point(0, 0),
-    // anchor: new window.google.maps.Point(13, 26),
-    scaledSize: new window.google.maps.Size(36, 36),
-  };
-
   return (
     <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
       <GoogleMap
@@ -50,12 +44,21 @@ const MapContainer = () => {
         options={{ mapTypeControl: false, streetViewControl: false }}
       >
         {currentMarkers.map((marker, index) => (
-          <Marker
+          <MarkerF
             key={index}
             position={marker}
             clickable={true}
-            icon={plusMarkerIcon}
-          />
+            icon={{
+              url: "/icons/AddLocation.png",
+              scaledSize: new window.google.maps.Size(46, 46),
+            }}
+          >
+            <InfoWindowF position={marker}>
+              <div>
+                <h4 style={{ color: "black" }}>Click on the marker to save location</h4>
+              </div>
+            </InfoWindowF>
+          </MarkerF>
         ))}
       </GoogleMap>
     </LoadScript>
