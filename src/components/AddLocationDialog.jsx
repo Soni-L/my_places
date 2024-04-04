@@ -1,13 +1,14 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
-import { Divider, TextField, Typography } from "@mui/material";
+import { Button, TextField, Typography } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
+import useLocalStorageArray from "../hooks/useLocalStorageArray";
 
 export default function AddLocationDialog({ dialogOptions, handleClose }) {
-  console.log(dialogOptions);
+  const { items, addItem } = useLocalStorageArray();
+
   return (
     <React.Fragment>
       <Dialog
@@ -19,8 +20,11 @@ export default function AddLocationDialog({ dialogOptions, handleClose }) {
             event.preventDefault();
             const formData = new FormData(event.currentTarget);
             const formJson = Object.fromEntries(formData.entries());
-            const email = formJson.email;
-            console.log(email);
+            addItem({
+              name: formJson.name,
+              lat: dialogOptions.lat,
+              lng: dialogOptions.lng,
+            });
             handleClose();
           },
         }}
@@ -37,8 +41,12 @@ export default function AddLocationDialog({ dialogOptions, handleClose }) {
             fullWidth
             variant="standard"
           />
-          <Typography variant="body2">Lat: {dialogOptions.lat}</Typography>
-          <Typography variant="body2">Lng: {dialogOptions.lng}</Typography>
+          <Typography id="lat" variant="body2">
+            Lat: {dialogOptions.lat}
+          </Typography>
+          <Typography id="lng" variant="body2">
+            Lng: {dialogOptions.lng}
+          </Typography>
         </DialogContent>
         <DialogActions>
           <Button type="submit">Add Location</Button>
