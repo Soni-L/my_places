@@ -20,6 +20,7 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import LocationSearchingIcon from "@mui/icons-material/LocationSearching";
+import MyLocationIcon from "@mui/icons-material/MyLocation";
 import MapContainer from "./components/MapContainer";
 import { useState } from "react";
 import AddLocationDialog from "./components/AddLocationDialog";
@@ -49,7 +50,7 @@ const AlertDialog = ({ handleClose, handleAgree, dialogOptions }) => {
           }}
           autoFocus
         >
-          Yes
+          Delete
         </Button>
       </DialogActions>
     </Dialog>
@@ -57,6 +58,7 @@ const AlertDialog = ({ handleClose, handleAgree, dialogOptions }) => {
 };
 
 function App() {
+  const [selectedLocation, setSelectedLocation] = useState({ id: null });
   const [items, setItems] = useLocalStorage("my_locations", []);
   const [addLocationDialog, setAddLocationDialog] = useState({ open: false });
   const [alertDialog, setAlertDialog] = useState({
@@ -86,6 +88,8 @@ function App() {
       <div className="page-content-container">
         <div className="page-content-container-map-container">
           <MapContainer
+            selectedLocation={selectedLocation}
+            setSelectedLocation={(location) => setSelectedLocation(location)}
             addLocationClick={(event) => {
               setAddLocationDialog({ open: true, ...event });
             }}
@@ -103,10 +107,17 @@ function App() {
                   margin: "3px",
                 }}
               >
-                <IconButton size="sm">
-                  <ListItemIcon>
+                <IconButton
+                  size="xs"
+                  onClick={() =>
+                    setSelectedLocation({ id: item.id, selectSource: "list" })
+                  }
+                >
+                  {selectedLocation.id === item.id ? (
+                    <MyLocationIcon sx={{ color: "#388e3c" }} />
+                  ) : (
                     <LocationSearchingIcon />
-                  </ListItemIcon>
+                  )}
                 </IconButton>
                 <ListItemText sx={{ color: "black" }} primary={item.name} />
                 <ListItemSecondaryAction>
