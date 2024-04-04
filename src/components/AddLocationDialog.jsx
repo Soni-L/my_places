@@ -4,10 +4,16 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import useLocalStorageArray from "../hooks/useLocalStorageArray";
+import useLocalStorage from "use-local-storage";
+import { v4 as uuidv4 } from "uuid";
 
 export default function AddLocationDialog({ dialogOptions, handleClose }) {
-  const { items, addItem } = useLocalStorageArray();
+  const [items, setItems] = useLocalStorage("my_locations", []);
+
+  const handleAddItem = (newItem) => {
+    const newItemWithId = { id: uuidv4(), ...newItem };
+    setItems([...items, newItemWithId]);
+  };
 
   return (
     <React.Fragment>
@@ -20,7 +26,7 @@ export default function AddLocationDialog({ dialogOptions, handleClose }) {
             event.preventDefault();
             const formData = new FormData(event.currentTarget);
             const formJson = Object.fromEntries(formData.entries());
-            addItem({
+            handleAddItem({
               name: formJson.name,
               lat: dialogOptions.lat,
               lng: dialogOptions.lng,

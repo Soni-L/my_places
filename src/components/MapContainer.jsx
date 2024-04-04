@@ -1,15 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   GoogleMap,
   LoadScript,
   MarkerF,
   InfoWindowF,
 } from "@react-google-maps/api";
-import useLocalStorageArray from "../hooks/useLocalStorageArray";
+import useLocalStorage from "use-local-storage";
 
 const MapContainer = ({ addLocationClick }) => {
   const [currentMarkers, setCurrentMarkers] = useState([]);
-  const { items } = useLocalStorageArray();
+  const [items] = useLocalStorage("my_locations", []);
+
+  useEffect(() => {
+    setCurrentMarkers([]);
+  }, [items]);
 
   const mapStyles = {
     height: "calc(100vh - 70px)",

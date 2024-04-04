@@ -14,11 +14,15 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import MapContainer from "./components/MapContainer";
 import { useState } from "react";
 import AddLocationDialog from "./components/AddLocationDialog";
-import useLocalStorageArray from "./hooks/useLocalStorageArray";
+import useLocalStorage from "use-local-storage";
 
 function App() {
-  const { items, deleteItem } = useLocalStorageArray();
+  const [items, setItems] = useLocalStorage("my_locations", []);
   const [addLocationDialog, setAddLocationDialog] = useState({ open: false });
+
+    const deleteItem = (id) => {
+      setItems(items.filter((item) => item.id !== id));
+    };
 
   return (
     <>
