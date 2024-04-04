@@ -64,7 +64,12 @@ function App() {
 
   return (
     <>
-      <Navbar />
+      <Navbar
+        items={items}
+        selectedLocation={selectedLocation}
+        setSelectedLocation={setSelectedLocation}
+        handleDelete={handleDelete}
+      />
       <div className="page-content-container">
         <div className="page-content-container-map-container">
           <MapContainer
