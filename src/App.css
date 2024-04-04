@@ -5,13 +5,21 @@
 
 .page-content-container-map-container {
   flex: 1;
-  padding: 8px;
+  padding: 2px;
+  margin: 0;
 }
 
 .page-content-container-list-container {
   flex: 1;
   max-width: 300px;
   overflow: scroll;
-  border-left: 1px solid #1976d2;
-  padding: 2px;
+  overflow-x: hidden;
+  padding: 0;
+  margin: 0;
+}
+
+@media only screen and (max-width: 768px) {
+  .page-content-container-list-container {
+    display: none;
+  }
 }
