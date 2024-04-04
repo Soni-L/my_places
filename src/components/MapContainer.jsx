@@ -16,7 +16,7 @@ const MapContainer = ({ addLocationClick }) => {
   }, [items]);
 
   const mapStyles = {
-    height: "calc(100vh - 70px)",
+    height: "calc(100vh - 80px)",
     width: "100%",
   };
 

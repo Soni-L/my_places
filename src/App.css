@@ -11,6 +11,7 @@
 .page-content-container-list-container {
   flex: 1;
   max-width: 300px;
+  overflow: scroll;
   border-left: 1px solid #1976d2;
-  padding: 8px;
+  padding: 2px;
 }

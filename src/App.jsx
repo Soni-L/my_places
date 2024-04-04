@@ -6,23 +6,71 @@ import {
   Typography,
   List,
   ListItem,
+  ListItemIcon,
+  ListItemButton,
   ListItemText,
   ListItemSecondaryAction,
   IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import LocationSearchingIcon from "@mui/icons-material/LocationSearching";
 import MapContainer from "./components/MapContainer";
 import { useState } from "react";
 import AddLocationDialog from "./components/AddLocationDialog";
 import useLocalStorage from "use-local-storage";
 
+const AlertDialog = ({ handleClose, handleAgree, dialogOptions }) => {
+  return (
+    <Dialog
+      open={dialogOptions.open}
+      onClose={handleClose}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+    >
+      <DialogTitle id="alert-dialog-title">{"Delete Confirmation"}</DialogTitle>
+      <DialogContent>
+        <DialogContentText id="alert-dialog-description">
+          Are you sure you want to delete :{" "}
+          <span style={{ fontWeight: "bold" }}>{dialogOptions.name}</span>
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose}>Cancel</Button>
+        <Button
+          onClick={() => {
+            handleAgree(dialogOptions.id);
+            handleClose();
+          }}
+          autoFocus
+        >
+          Yes
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
 function App() {
   const [items, setItems] = useLocalStorage("my_locations", []);
   const [addLocationDialog, setAddLocationDialog] = useState({ open: false });
+  const [alertDialog, setAlertDialog] = useState({
+    dialogOptions: addLocationDialog,
+    open: false,
+  });
 
-    const deleteItem = (id) => {
-      setItems(items.filter((item) => item.id !== id));
-    };
+  const deleteItem = (id) => {
+    setItems(items.filter((item) => item.id !== id));
+  };
+
+  const handleDelete = (item) => {
+    setAlertDialog({ open: true, ...item });
+  };
 
   return (
     <>
@@ -47,13 +95,25 @@ function App() {
         <div className="page-content-container-list-container">
           <List>
             {items.map((item) => (
-              <ListItem key={item.id}>
-                <ListItemText primary={item.name} />
+              <ListItem
+                key={item.id}
+                sx={{
+                  backgroundColor: "white",
+                  borderRadius: "8px",
+                  margin: "3px",
+                }}
+              >
+                <IconButton size="sm">
+                  <ListItemIcon>
+                    <LocationSearchingIcon />
+                  </ListItemIcon>
+                </IconButton>
+                <ListItemText sx={{ color: "black" }} primary={item.name} />
                 <ListItemSecondaryAction>
                   <IconButton
                     edge="end"
                     aria-label="delete"
-                    onClick={() => deleteItem(item.id)}
+                    onClick={() => handleDelete(item)}
                   >
                     <DeleteIcon style={{ color: "red" }} />
                   </IconButton>
@@ -66,6 +126,11 @@ function App() {
       <AddLocationDialog
         dialogOptions={addLocationDialog}
         handleClose={() => setAddLocationDialog({ open: false })}
+      />
+      <AlertDialog
+        handleClose={() => setAlertDialog({ open: false })}
+        handleAgree={deleteItem}
+        dialogOptions={alertDialog}
       />
     </>
   );
