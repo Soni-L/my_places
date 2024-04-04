@@ -6,7 +6,8 @@ import {
   InfoWindowF,
 } from "@react-google-maps/api";
 import useLocalStorage from "use-local-storage";
-import { Button, Input, Paper, Typography } from "@mui/material";
+import { Button, IconButton, Input, Paper, Typography } from "@mui/material";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 const defaultCenter = {
   lat: 40.712776,
@@ -66,27 +67,14 @@ const MapContainer = ({
     }
   };
 
+  const copyJsonToClipboard = (text) => {
+    navigator.clipboard
+      .writeText(JSON.stringify(text))
+      .catch((err) => console.error("Failed to copy:", err));
+  };
+
   return (
     <>
-      <Paper
-        elevation={5}
-        style={{
-          position: "fixed",
-          zIndex: "100",
-          padding: "8px",
-          backgroundColor: "white",
-          border: "1px solid gray",
-          borderRadius: "0",
-        }}
-      >
-        <Input
-          type="text"
-          placeholder="Search location..."
-          value={searchLocation}
-          onChange={(e) => setSearchLocation(e.target.value)}
-        />
-        <Button onClick={handleSearch}>Search</Button>
-      </Paper>
       <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
         <GoogleMap
           mapContainerStyle={mapStyles}
@@ -95,7 +83,30 @@ const MapContainer = ({
           onClick={handleMapClick}
           mapTypeId="roadmap"
           options={{ mapTypeControl: false, streetViewControl: false }}
+          style={{ position: "relative" }}
         >
+          <Paper
+            elevation={10}
+            style={{
+              position: "absolute",
+              zIndex: "100",
+              padding: "8px",
+              backgroundColor: "white",
+              borderRadius: "4px",
+              borderBottom: "1px solid gray",
+              borderRight: "1px solid gray",
+              top: "2px",
+              left: "2px",
+            }}
+          >
+            <Input
+              type="text"
+              placeholder="Search location..."
+              value={searchLocation}
+              onChange={(e) => setSearchLocation(e.target.value)}
+            />
+            <Button onClick={handleSearch}>Search</Button>
+          </Paper>
           {currentMarkers.map((marker, index) => (
             <MarkerF
               key={index}
@@ -136,18 +147,51 @@ const MapContainer = ({
                     >
                       {marker.name}
                     </Typography>
-                    <Typography
-                      style={{ padding: 0, color: "black" }}
-                      variant="body2"
+                    <div
+                      style={{
+                        backgroundColor: "#f3e5f5",
+                        position: "relative",
+                        display: "flex",
+                        flexDirection: "column",
+                        padding: "4px",
+                        paddingTop: "19px",
+                        borderRadius: "4px",
+                      }}
                     >
-                      lat: {marker.lat}
-                    </Typography>
-                    <Typography
-                      style={{ padding: 0, color: "black" }}
-                      variant="body2"
-                    >
-                      lng: {marker.lng}
-                    </Typography>
+                      <IconButton
+                        onClick={() =>
+                          copyJsonToClipboard({
+                            name: marker.name,
+                            lat: marker.lat,
+                            lng: marker.lng,
+                          })
+                        }
+                        size="xs"
+                        style={{
+                          height: "15px",
+                          width: "15px",
+                          position: "absolute",
+                          top: 2,
+                          right: 2,
+                        }}
+                      >
+                        <ContentCopyIcon
+                          style={{ height: "15px", width: "15px" }}
+                        />
+                      </IconButton>
+                      <Typography
+                        style={{ padding: 0, color: "black" }}
+                        variant="caption"
+                      >
+                        lat: {marker.lat}
+                      </Typography>
+                      <Typography
+                        style={{ padding: 0, color: "black" }}
+                        variant="caption"
+                      >
+                        lng: {marker.lng}
+                      </Typography>
+                    </div>
                   </div>
                 </InfoWindowF>
               )}
