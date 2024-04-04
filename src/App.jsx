@@ -1,16 +1,5 @@
 import "./App.css";
 import {
-  AppBar,
-  Box,
-  Toolbar,
-  Typography,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemButton,
-  ListItemText,
-  ListItemSecondaryAction,
-  IconButton,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -18,13 +7,12 @@ import {
   DialogActions,
   Button,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import LocationSearchingIcon from "@mui/icons-material/LocationSearching";
-import MyLocationIcon from "@mui/icons-material/MyLocation";
 import MapContainer from "./components/MapContainer";
 import { useState } from "react";
 import AddLocationDialog from "./components/AddLocationDialog";
 import useLocalStorage from "use-local-storage";
+import Navbar from "./components/NavBar/Navbar";
+import LocationsListView from "./components/LocationsListView";
 
 const AlertDialog = ({ handleClose, handleAgree, dialogOptions }) => {
   return (
@@ -76,15 +64,7 @@ function App() {
 
   return (
     <>
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
-          <Toolbar style={{ height: "60px" }}>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              My Places
-            </Typography>
-          </Toolbar>
-        </AppBar>
-      </Box>
+      <Navbar />
       <div className="page-content-container">
         <div className="page-content-container-map-container">
           <MapContainer
@@ -97,41 +77,12 @@ function App() {
         </div>
 
         <div className="page-content-container-list-container">
-          <List>
-            {items.map((item) => (
-              <ListItem
-                key={item.id}
-                sx={{
-                  backgroundColor: "white",
-                  borderRadius: "8px",
-                  margin: "3px",
-                }}
-              >
-                <IconButton
-                  size="xs"
-                  onClick={() =>
-                    setSelectedLocation({ id: item.id, selectSource: "list" })
-                  }
-                >
-                  {selectedLocation.id === item.id ? (
-                    <MyLocationIcon sx={{ color: "#388e3c" }} />
-                  ) : (
-                    <LocationSearchingIcon />
-                  )}
-                </IconButton>
-                <ListItemText sx={{ color: "black" }} primary={item.name} />
-                <ListItemSecondaryAction>
-                  <IconButton
-                    edge="end"
-                    aria-label="delete"
-                    onClick={() => handleDelete(item)}
-                  >
-                    <DeleteIcon style={{ color: "red" }} />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-            ))}
-          </List>
+          <LocationsListView
+            items={items}
+            selectedLocation={selectedLocation}
+            setSelectedLocation={setSelectedLocation}
+            handleDelete={handleDelete}
+          />
         </div>
       </div>
       <AddLocationDialog

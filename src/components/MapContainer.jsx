@@ -75,25 +75,6 @@ const MapContainer = ({
 
   return (
     <>
-      <Paper
-        elevation={5}
-        style={{
-          position: "fixed",
-          zIndex: "100",
-          padding: "8px",
-          backgroundColor: "white",
-          border: "1px solid gray",
-          borderRadius: "0",
-        }}
-      >
-        <Input
-          type="text"
-          placeholder="Search location..."
-          value={searchLocation}
-          onChange={(e) => setSearchLocation(e.target.value)}
-        />
-        <Button onClick={handleSearch}>Search</Button>
-      </Paper>
       <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
         <GoogleMap
           mapContainerStyle={mapStyles}
@@ -102,7 +83,30 @@ const MapContainer = ({
           onClick={handleMapClick}
           mapTypeId="roadmap"
           options={{ mapTypeControl: false, streetViewControl: false }}
+          style={{ position: "relative" }}
         >
+          <Paper
+            elevation={10}
+            style={{
+              position: "absolute",
+              zIndex: "100",
+              padding: "8px",
+              backgroundColor: "white",
+              borderRadius: "4px",
+              borderBottom: "1px solid gray",
+              borderRight: "1px solid gray",
+              top: "2px",
+              left: "2px",
+            }}
+          >
+            <Input
+              type="text"
+              placeholder="Search location..."
+              value={searchLocation}
+              onChange={(e) => setSearchLocation(e.target.value)}
+            />
+            <Button onClick={handleSearch}>Search</Button>
+          </Paper>
           {currentMarkers.map((marker, index) => (
             <MarkerF
               key={index}
